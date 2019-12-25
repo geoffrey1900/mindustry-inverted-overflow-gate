@@ -1,4 +1,3 @@
-Vars.enableConsole  = true;
 var entities = {}; // uses a centralized dictionary as fields of OverflowGateEntity are private
 function convert(entity) {
     if (entities[entity.id] == undefined) {
