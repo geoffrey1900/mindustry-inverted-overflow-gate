@@ -1,0 +1,7 @@
+name: inverted overflow gate
+displayName: inverted overflow gate
+author: sodii
+description: Allows you to build inverted overflow gates.
+version: "1.0"
+minGameVersion: "101.1"
+dependencies: [ ]
