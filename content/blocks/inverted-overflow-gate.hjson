@@ -8,7 +8,7 @@ update: true
 solid: true
 hasItems: true
 group: transportation
-research: overflow
+research: overflow-gate
 
 requirements: [ "lead/2"
                 "copper/4" ]
