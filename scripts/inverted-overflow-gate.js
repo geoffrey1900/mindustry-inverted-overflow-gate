@@ -1,24 +1,33 @@
-var entities = {}; // uses a centralized dictionary as fields of OverflowGateEntity are private
+var entities = {}; // using a centralized dictionary as fields of OverflowGateEntity are private
 function convert(entity) {
     if (entities[entity.id] == undefined) {
-        entities[entity.id] = {lastItem: null, lastInput: null, time: null, items: entity.items}
+        entities[entity.id] = {lastItem: null, lastInput: null, time: 0, items: entity.items}
     }
     return entities[entity.id]
 }
+
+const overflow = Vars.content.getByName(ContentType.block, 'overflow-gate');
+
 const invertedOverflowGate = extendContent(OverflowGate, "inverted-overflow-gate", {
+	
+	// copy of the original method, modified to use the centralized dictionary
     removeStack(tile, item, amount){
         var entity = convert(tile.ent());
-        var result = Block.removeStack(tile, item, amount);
+        var result = overflow.removeStack(tile, item, amount);
         if(result != 0 && item == entity.lastItem){
             entity.lastItem = null;
         }
         return result;
     },
+	
+	// copy of the original method, modified to use the centralized dictionary
     acceptItem(item, tile, source){
         var entity = convert(tile.ent());
 
         return tile.getTeam() == source.getTeam() && entity.lastItem === null && entity.items.total() == 0;
     },
+	
+	// copy of the original method, modified to use the centralized dictionary
     handleItem(item, tile, source){
         var entity = convert(tile.ent());
         entity.items.add(item, 1);
@@ -32,7 +41,7 @@ const invertedOverflowGate = extendContent(OverflowGate, "inverted-overflow-gate
         if (entity.lastItem === null && entity.items.total() > 0) {
             entity.items.clear();
         }
-        var getTivarargetAndFlip = (tile, item, src) => {
+        var getTargetAndFlip = (tile, item, src) => {
             var incomingDirection = tile.relativeTo(src.x, src.y);
             if (incomingDirection === -1) return null;
 
@@ -51,9 +60,12 @@ const invertedOverflowGate = extendContent(OverflowGate, "inverted-overflow-gate
             }
             return output;
         }
-        if(entity.lastItem !== null){
-            var target = getTivarargetAndFlip(tile, entity.lastItem, entity.lastInput, true);
-            if (target === null) return
+		
+		entity.time += 1 / overflow.speed * Time.delta();
+		
+        if(entity.lastItem !== null && entity.time >= 1){
+            var target = getTargetAndFlip(tile, entity.lastItem, entity.lastInput);
+            if (target === null) return;
             
             target.block().handleItem(entity.lastItem, target, tile);
             entity.items.remove(entity.lastItem, 1);

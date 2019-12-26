@@ -1,13 +1,6 @@
-localizedName: "Inverted overflow gate"
+name: "Inverted Overflow Gate"
 description: "An inverted overflow gate."
 
-category: distribution
-size: 1
-
-update: true
-solid: true
-hasItems: true
-group: transportation
 research: overflow-gate
 
 requirements: [ "lead/2"
