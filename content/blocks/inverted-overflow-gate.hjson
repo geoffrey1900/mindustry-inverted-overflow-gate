@@ -1,4 +1,4 @@
-name: "Inverted Overflow Gate"
+name: "Inverted Overflow Gate",
 description: "An inverted overflow gate."
 
 research: overflow-gate
