@@ -31,7 +31,7 @@ const invertedOverflowGate = extendContent(OverflowGate, "inverted-overflow-gate
     handleItem(item, tile, source){
         var entity = convert(tile.ent());
         entity.items.add(Vars.content.item(3), 1);
-        entity.lastItem = item;
+        entity.lastItem = Vars.content.item(3);
         entity.time = 0;
         entity.lastInput = source;
     },
